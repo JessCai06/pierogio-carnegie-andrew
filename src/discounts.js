@@ -64,12 +64,17 @@ function applyCoupon(code, order) {
   }
   
   if (code === 'FIRST10') {
-    let discount = -0.10;
+    // Compute subtotal in cents
     let subtotal = 0;
     for (const item of order.items) {
       subtotal += item.unitPriceCents * item.qty;
     }
-    return Math.floor(subtotal * discount);
+
+    // Apply 10% only when subtotal >= $20 (2000 cents)
+    if (subtotal < 2000) {
+      return 0;
+    }
+    return Math.floor(subtotal * 0.10);
   }
   
   return 0;
